@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}商品一覧 | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">おすすめ商品</h1>
+    <p class="page-desc">日々の暮らしに寄り添う、こだわりのコーヒーと暮らしの道具をお届けします。</p>
+</div>
+
+{% if products %}
+    <div class="product-grid">
+        {% for product in products %}
+            <article class="product-card">
+                <a href="{% url 'products:product_detail' product.pk %}" class="card-image-wrap">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-image" loading="lazy">
+                    {% else %}
+                        <img src="{% static 'images/no-image.png' %}" alt="No Image" class="card-image" loading="lazy">
+                    {% endif %}
+                    
+                    {% if product.is_in_stock %}
+                        <span class="card-badge badge-stock">在庫あり</span>
+                    {% else %}
+                        <span class="card-badge badge-soldout">売り切れ</span>
+                    {% endif %}
+                </a>
+                <div class="card-body">
+                    <h2 class="card-title">
+                        <a href="{% url 'products:product_detail' product.pk %}">{{ product.name }}</a>
+                    </h2>
+                    <p class="card-description">{{ product.description }}</p>
+                    <div class="card-footer">
+                        <div class="price">
+                            ¥{{ product.price }}<span class="price-tax">（税込）</span>
+                        </div>
+                        <a href="{% url 'products:product_detail' product.pk %}" class="btn btn-outline btn-sm">詳細を見る</a>
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <p>現在販売中の商品はございません。</p>
+    </div>
+{% endif %}
+{% endblock %}

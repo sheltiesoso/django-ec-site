@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="breadcrumb">
+    <a href="{% url 'products:product_list' %}" class="back-link">&larr; 商品一覧に戻る</a>
+</div>
+
+<div class="detail-layout">
+    <div class="detail-image-wrap">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="detail-image">
+        {% else %}
+            <img src="{% static 'images/no-image.png' %}" alt="No Image" class="detail-image">
+        {% endif %}
+    </div>
+
+    <div class="detail-info">
+        <h1 class="detail-title">{{ product.name }}</h1>
+
+        <div class="detail-price-box">
+            <span class="detail-price">¥{{ product.price }}</span>
+            <span class="price-tax">（税込）</span>
+        </div>
+
+        <div class="stock-status">
+            {% if product.is_in_stock %}
+                <span class="stock-ok">● 在庫あり（残り {{ product.stock }} 点）</span>
+            {% else %}
+                <span class="stock-zero">▲ 売り切れ（ただいま在庫がございません）</span>
+            {% endif %}
+        </div>
+
+        <div class="detail-desc-box">
+            <h2 class="detail-desc-title">商品詳細</h2>
+            <p class="detail-desc-text">{{ product.description }}</p>
+        </div>
+
+        {% if product.is_in_stock %}
+            <form action="#add_to_cart" method="post" class="add-cart-form">
+                {% csrf_token %}
+                <label for="quantity" class="form-label">数量:</label>
+                <select name="quantity" id="quantity" class="quantity-select">
+                    {% for q in quantity_range %}
+                        <option value="{{ q }}">{{ q }}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" class="btn btn-cta" title="Phase 6でカート機能が有効化されます">
+                    🛒 カートに追加
+                </button>
+            </form>
+        {% else %}
+            <div class="add-cart-form">
+                <button type="button" class="btn btn-disabled" disabled>
+                    売り切れ
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
