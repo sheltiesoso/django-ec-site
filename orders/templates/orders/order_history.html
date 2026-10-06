@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}注文履歴 | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="history-container">
+    <div class="breadcrumb">
+        <a href="{% url 'products:product_list' %}" class="back-link">&larr; 商品一覧に戻る</a>
+    </div>
+
+    <h1 class="page-title">注文履歴一覧</h1>
+    <p class="page-desc">過去にご注文いただいた履歴をご確認いただけます。</p>
+
+    {% if orders %}
+        <div class="history-table-card">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>注文日</th>
+                        <th>注文番号</th>
+                        <th>お届け先</th>
+                        <th>商品点数</th>
+                        <th>合計金額</th>
+                        <th>詳細</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                        <tr>
+                            <td class="date-col">
+                                {{ order.created_at|date:"Y/m/d H:i" }}
+                            </td>
+                            <td class="number-col">
+                                <strong>{{ order.order_number }}</strong>
+                            </td>
+                            <td>
+                                {{ order.shipping_name }} 様
+                            </td>
+                            <td>
+                                {{ order.items.count }} 種類
+                            </td>
+                            <td class="price-col">
+                                <strong>¥{{ order.total_price }}</strong>（税込）
+                            </td>
+                            <td>
+                                <a href="{% url 'orders:order_detail' order.order_number %}" class="btn btn-outline btn-sm">
+                                    詳細を見る
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state-card">
+            <div class="empty-icon">📦</div>
+            <h2>注文履歴がありません</h2>
+            <p>まだご注文いただいた履歴がありません。お買い物をお楽しみください。</p>
+            <a href="{% url 'products:product_list' %}" class="btn btn-primary">商品一覧へ</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

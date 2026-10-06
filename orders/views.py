@@ -147,3 +147,21 @@ def order_complete(request, order_number):
     return render(request, 'orders/order_complete.html', {
         'order': order,
     })
+
+
+@login_required
+def order_history(request):
+    """ログインユーザー自身の注文履歴一覧を表示するビュー"""
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    return render(request, 'orders/order_history.html', {
+        'orders': orders,
+    })
+
+
+@login_required
+def order_detail(request, order_number):
+    """注文詳細を表示するビュー (IDOR対策: 自身の注文以外は404 Not Found)"""
+    order = get_object_or_404(Order, order_number=order_number, user=request.user)
+    return render(request, 'orders/order_detail.html', {
+        'order': order,
+    })

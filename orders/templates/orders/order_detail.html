@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}注文詳細 #{{ order.order_number }} | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="history-detail-container">
+    <div class="breadcrumb">
+        <a href="{% url 'orders:order_history' %}" class="back-link">&larr; 注文履歴一覧に戻る</a>
+    </div>
+
+    <div class="detail-header-flex">
+        <div>
+            <h1 class="page-title">注文詳細</h1>
+            <p class="order-meta-desc">
+                注文番号: <strong>{{ order.order_number }}</strong> &nbsp;|&nbsp; 
+                注文日時: {{ order.created_at|date:"Y年m月d日 H:i" }}
+            </p>
+        </div>
+        <div class="status-badge-box">
+            <span class="badge-status-completed">● 注文完了</span>
+        </div>
+    </div>
+
+    <div class="order-detail-grid">
+        <!-- 注文商品明細 -->
+        <div class="order-detail-main">
+            <div class="order-card">
+                <h2 class="card-section-title">ご注文商品明細</h2>
+                <table class="detail-items-table">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>購入時単価</th>
+                            <th>数量</th>
+                            <th>小計</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                            <tr>
+                                <td class="product-info-cell">
+                                    <div class="detail-item-flex">
+                                        <div class="detail-thumb">
+                                            {% if item.product.image %}
+                                                <img src="{{ item.product.image.url }}" alt="{{ item.product_name }}">
+                                            {% else %}
+                                                <img src="{% static 'images/no-image.png' %}" alt="No Image">
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <a href="{% url 'products:product_detail' item.product.pk %}" class="item-link">
+                                                {{ item.product_name }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>¥{{ item.price }}</td>
+                                <td>{{ item.quantity }} 点</td>
+                                <td class="item-subtotal"><strong>¥{{ item.subtotal }}</strong></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="detail-total-box">
+                    <div class="detail-total-row">
+                        <span>商品小計（税込）</span>
+                        <span>¥{{ order.total_price }}</span>
+                    </div>
+                    <div class="detail-total-row">
+                        <span>配送料</span>
+                        <span>無料</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="detail-total-final">
+                        <span>お支払い総額</span>
+                        <span class="total-amount">¥{{ order.total_price }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- お届け先・お支払い情報 -->
+        <aside class="order-detail-sidebar">
+            <div class="order-card">
+                <h2 class="card-section-title">お届け先情報</h2>
+                <div class="info-block">
+                    <p class="info-label">宛名</p>
+                    <p class="info-val">{{ order.shipping_name }} 様</p>
+                </div>
+                <div class="info-block">
+                    <p class="info-label">郵便番号</p>
+                    <p class="info-val">〒{{ order.shipping_postal_code }}</p>
+                </div>
+                <div class="info-block">
+                    <p class="info-label">お届け先住所</p>
+                    <p class="info-val">{{ order.shipping_address }}</p>
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <h2 class="card-section-title">お支払い情報</h2>
+                <div class="info-block">
+                    <p class="info-label">決済方法</p>
+                    <p class="info-val">テスト代金引換 / 模擬決済</p>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}

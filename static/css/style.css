@@ -1024,3 +1024,52 @@ body {
 
 
 
+
+/* === Phase 8: 注文履歴 & 注文詳細 === */
+
+/* 注文履歴一覧 */
+.history-table-card {
+    background: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05);
+    overflow: hidden;
+    margin-top: 1.5rem;
+}
+.history-table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+.history-table th { background: #f8fafc; color: #475569; font-weight: 600; padding: 1rem 1.25rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+.history-table td { padding: 1rem 1.25rem; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.history-table tr:last-child td { border-bottom: none; }
+.date-col { color: #64748b; font-size: .88rem; white-space: nowrap; }
+.number-col { font-family: monospace; }
+.empty-state-card { background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:4rem 2rem; text-align:center; margin-top:1.5rem; }
+.empty-icon { font-size:3.5rem; margin-bottom:1rem; }
+.empty-state-card h2 { font-size:1.4rem; color:#0f172a; margin-bottom:.5rem; }
+.empty-state-card p { color:#64748b; margin-bottom:1.5rem; }
+
+/* 注文詳細画面 */
+.detail-header-flex { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem; }
+.order-meta-desc { color:#64748b; font-size:.9rem; margin-top:.35rem; }
+.badge-status-completed { background:#dcfce7; color:#166534; padding:.4rem .8rem; border-radius:9999px; font-size:.85rem; font-weight:600; }
+.order-detail-grid { display:grid; grid-template-columns:1fr 320px; gap:2rem; align-items:start; }
+.order-card { background:#fff; border-radius:12px; border:1px solid #e2e8f0; padding:2rem; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+.detail-items-table { width:100%; border-collapse:collapse; font-size:.9rem; margin-bottom:1.5rem; }
+.detail-items-table th { background:#f8fafc; color:#475569; font-weight:600; padding:.75rem 1rem; text-align:left; border-bottom:1px solid #e2e8f0; }
+.detail-items-table td { padding:1rem; border-bottom:1px solid #f1f5f9; vertical-align:middle; }
+.detail-item-flex { display:flex; align-items:center; gap:.75rem; }
+.detail-thumb { width:52px; height:52px; border-radius:8px; background:#f1f5f9; overflow:hidden; flex-shrink:0; }
+.detail-thumb img { width:100%; height:100%; object-fit:cover; }
+.item-link { color:#0f172a; text-decoration:none; font-weight:600; }
+.item-link:hover { color:#2563eb; }
+.item-subtotal { text-align:right; }
+.detail-total-box { border-top:1px solid #e2e8f0; padding-top:1.25rem; }
+.detail-total-row { display:flex; justify-content:space-between; font-size:.95rem; color:#475569; margin-bottom:.6rem; }
+.detail-total-final { display:flex; justify-content:space-between; align-items:baseline; font-size:1.1rem; font-weight:700; color:#0f172a; margin-top:1rem; }
+.info-block { margin-bottom:1.25rem; }
+.info-label { font-size:.8rem; color:#64748b; font-weight:600; text-transform:uppercase; letter-spacing:.04em; margin-bottom:.2rem; }
+.info-val { font-size:.95rem; color:#0f172a; }
+
+@media (max-width: 860px) {
+    .order-detail-grid { grid-template-columns: 1fr; }
+    .detail-header-flex { flex-direction: column; gap: .75rem; }
+}
