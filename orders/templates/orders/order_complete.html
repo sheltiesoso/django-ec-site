@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}ご注文完了 | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="complete-container">
+    <div class="complete-card">
+        <div class="complete-icon">🎉</div>
+        <h1 class="complete-title">ご注文ありがとうございました！</h1>
+        <p class="complete-desc">
+            ご注文を承りました。商品の発送準備が整い次第、順次発送いたします。
+        </p>
+
+        <div class="order-number-banner">
+            <span class="order-number-label">注文番号</span>
+            <strong class="order-number-val">{{ order.order_number }}</strong>
+        </div>
+
+        <div class="order-summary-box">
+            <h2 class="order-box-title">ご注文情報控え</h2>
+            
+            <div class="order-info-grid">
+                <div class="order-info-col">
+                    <h3>お届け先情報</h3>
+                    <p><strong>お名前:</strong> {{ order.shipping_name }} 様</p>
+                    <p><strong>郵便番号:</strong> 〒{{ order.shipping_postal_code }}</p>
+                    <p><strong>ご住所:</strong> {{ order.shipping_address }}</p>
+                </div>
+                <div class="order-info-col">
+                    <h3>ご注文詳細</h3>
+                    <p><strong>ご注文日時:</strong> {{ order.created_at|date:"Y年m月d日 H:i" }}</p>
+                    <p><strong>合計金額:</strong> ¥{{ order.total_price }}（税込）</p>
+                </div>
+            </div>
+
+            <div class="order-items-table-wrap">
+                <table class="order-items-table">
+                    <thead>
+                        <tr>
+                            <th>商品名</th>
+                            <th>購入時単価</th>
+                            <th>数量</th>
+                            <th>小計</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all %}
+                            <tr>
+                                <td>{{ item.product_name }}</td>
+                                <td>¥{{ item.price }}</td>
+                                <td>{{ item.quantity }} 点</td>
+                                <td>¥{{ item.subtotal }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="complete-actions">
+            <a href="{% url 'products:product_list' %}" class="btn btn-primary">
+                トップページへ戻る
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

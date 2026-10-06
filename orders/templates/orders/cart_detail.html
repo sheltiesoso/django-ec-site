@@ -98,7 +98,7 @@
 
                     <div class="checkout-box">
                         {% if user.is_authenticated %}
-                            <a href="#checkout" class="btn btn-cta btn-block" title="Phase 7で注文機能が有効化されます">
+                            <a href="{% url 'orders:checkout' %}" class="btn btn-cta btn-block">
                                 注文手続きへ進む
                             </a>
                         {% else %}

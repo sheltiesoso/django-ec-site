@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ご注文内容の確認 | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <div class="breadcrumb">
+        <a href="{% url 'orders:cart_detail' %}" class="back-link">&larr; カートに戻る</a>
+    </div>
+
+    <h1 class="page-title">ご注文手続き</h1>
+    <p class="page-desc">お届け先情報をご確認の上、「注文を確定する」ボタンを押してください。</p>
+
+    <div class="checkout-layout">
+        <!-- 左側: お届け先入力フォーム -->
+        <div class="checkout-form-section">
+            <div class="checkout-card">
+                <h2 class="card-section-title">1. お届け先情報</h2>
+                <form action="{% url 'orders:checkout' %}" method="post" id="checkout-form">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}" class="form-label">
+                                {{ field.label }}
+                                <span class="required-badge">必須</span>
+                            </label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="form-error">
+                                    {% for error in field.errors %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <div class="payment-info-box">
+                        <h2 class="card-section-title">2. お支払い方法</h2>
+                        <div class="mock-payment">
+                            <span class="payment-icon">💳</span>
+                            <div>
+                                <strong>テスト代金引換 / 模擬決済</strong>
+                                <p class="payment-note">※ ポートフォリオ環境のため、実際のカード引き落とし等は発生いたしません。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="submit-box">
+                        <button type="submit" class="btn btn-cta btn-block">
+                            注文を確定する (¥{{ total_price }})
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 右側: 注文商品一覧サマリー -->
+        <aside class="checkout-summary-section">
+            <div class="summary-card">
+                <h2 class="summary-title">ご注文商品明細</h2>
+                <div class="checkout-items-list">
+                    {% for item in cart_items %}
+                        <div class="checkout-item">
+                            <div class="checkout-item-thumb">
+                                {% if item.product.image %}
+                                    <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                {% else %}
+                                    <img src="{% static 'images/no-image.png' %}" alt="No Image">
+                                {% endif %}
+                            </div>
+                            <div class="checkout-item-detail">
+                                <span class="checkout-item-name">{{ item.product.name }}</span>
+                                <span class="checkout-item-meta">¥{{ item.price }} × {{ item.quantity }} 点</span>
+                            </div>
+                            <div class="checkout-item-subtotal">
+                                ¥{{ item.total_price }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-row">
+                    <span>商品合計（税込）</span>
+                    <span>¥{{ total_price }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>送料</span>
+                    <span>無料</span>
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-total">
+                    <span>ご請求総額</span>
+                    <span class="total-amount">¥{{ total_price }}</span>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+{% endblock %}
