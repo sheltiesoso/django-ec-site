@@ -39,7 +39,7 @@
         </div>
 
         {% if product.is_in_stock %}
-            <form action="#add_to_cart" method="post" class="add-cart-form">
+            <form action="{% url 'orders:cart_add' product.pk %}" method="post" class="add-cart-form">
                 {% csrf_token %}
                 <label for="quantity" class="form-label">数量:</label>
                 <select name="quantity" id="quantity" class="quantity-select">
@@ -47,7 +47,7 @@
                         <option value="{{ q }}">{{ q }}</option>
                     {% endfor %}
                 </select>
-                <button type="button" class="btn btn-cta" title="Phase 6でカート機能が有効化されます">
+                <button type="submit" class="btn btn-cta">
                     🛒 カートに追加
                 </button>
             </form>

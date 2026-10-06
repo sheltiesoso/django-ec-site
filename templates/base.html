@@ -21,10 +21,10 @@
             </a>
             <nav class="nav-menu">
                 <a href="{% url 'products:product_list' %}" class="nav-link">商品一覧</a>
-                <a href="#cart" class="nav-link cart-link">
+                <a href="{% url 'orders:cart_detail' %}" class="nav-link cart-link">
                     🛒 カート
-                    {% if request.session.cart %}
-                        <span class="badge">{{ request.session.cart|length }}</span>
+                    {% if cart_total_quantity > 0 %}
+                        <span class="badge">{{ cart_total_quantity }}</span>
                     {% endif %}
                 </a>
                 {% if user.is_authenticated %}

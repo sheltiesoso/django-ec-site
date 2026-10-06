@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}ショッピングカート | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <h1 class="page-title">ショッピングカート</h1>
+
+    {% if cart_items %}
+        <div class="cart-layout">
+            <div class="cart-main">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>商品</th>
+                            <th>単価</th>
+                            <th>数量</th>
+                            <th>小計</th>
+                            <th>削除</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                            <tr>
+                                <td class="product-col">
+                                    <div class="cart-item-info">
+                                        <div class="cart-item-thumb">
+                                            {% if item.product.image %}
+                                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                            {% else %}
+                                                <img src="{% static 'images/no-image.png' %}" alt="No Image">
+                                            {% endif %}
+                                        </div>
+                                        <div class="cart-item-name">
+                                            <a href="{% url 'products:product_detail' item.product.pk %}">
+                                                {{ item.product.name }}
+                                            </a>
+                                            {% if not item.product.is_in_stock %}
+                                                <span class="stock-warning">※ 在庫が不足しています</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="price-col">
+                                    ¥{{ item.price }}
+                                </td>
+                                <td class="quantity-col">
+                                    <form action="{% url 'orders:cart_update' item.product.pk %}" method="post" class="quantity-form">
+                                        {% csrf_token %}
+                                        <select name="quantity" class="form-select-sm" onchange="this.form.submit()">
+                                            {% for q in item.quantity_range %}
+                                                <option value="{{ q }}" {% if q == item.quantity %}selected{% endif %}>
+                                                    {{ q }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </form>
+                                </td>
+                                <td class="subtotal-col">
+                                    <strong>¥{{ item.total_price }}</strong>
+                                </td>
+                                <td class="action-col">
+                                    <form action="{% url 'orders:cart_remove' item.product.pk %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-remove" title="カートから削除">
+                                            ✕
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <div class="cart-actions">
+                    <a href="{% url 'products:product_list' %}" class="back-link">&larr; お買い物を続ける</a>
+                </div>
+            </div>
+
+            <!-- 注文概要サイドバー -->
+            <aside class="cart-sidebar">
+                <div class="summary-card">
+                    <h2 class="summary-title">ご注文内容</h2>
+                    <div class="summary-row">
+                        <span>小計（税込）</span>
+                        <span>¥{{ total_price }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>配送料</span>
+                        <span>無料</span>
+                    </div>
+                    <div class="summary-divider"></div>
+                    <div class="summary-total">
+                        <span>お支払い合計</span>
+                        <span class="total-amount">¥{{ total_price }}</span>
+                    </div>
+
+                    <div class="checkout-box">
+                        {% if user.is_authenticated %}
+                            <a href="#checkout" class="btn btn-cta btn-block" title="Phase 7で注文機能が有効化されます">
+                                注文手続きへ進む
+                            </a>
+                        {% else %}
+                            <a href="{% url 'accounts:login' %}?next={% url 'orders:cart_detail' %}" class="btn btn-primary btn-block">
+                                ログインして注文手続きへ
+                            </a>
+                            <p class="login-prompt">※ ご注文には会員ログインが必要です</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </aside>
+        </div>
+    {% else %}
+        <div class="empty-cart-card">
+            <div class="empty-cart-icon">🛒</div>
+            <h2>カートに商品が入っていません</h2>
+            <p>お気に入りの商品を見つけて、カートに追加してみましょう。</p>
+            <a href="{% url 'products:product_list' %}" class="btn btn-primary">商品一覧へ戻る</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
