@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Local Apps
     'products',
+    'accounts',
 ]
 
 MIDDLEWARE = [
@@ -131,4 +132,10 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 # Media files (User uploaded files)
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Authentication URLs
+LOGIN_REDIRECT_URL = 'products:product_list'
+LOGOUT_REDIRECT_URL = 'products:product_list'
+LOGIN_URL = 'accounts:login'
+
 

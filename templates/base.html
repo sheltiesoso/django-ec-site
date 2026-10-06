@@ -30,13 +30,13 @@
                 {% if user.is_authenticated %}
                     <span class="nav-user">ようこそ、<strong>{{ user.username }}</strong> さん</span>
                     <a href="#history" class="nav-link">注文履歴</a>
-                    <form action="#logout" method="post" class="inline-form">
+                    <form action="{% url 'accounts:logout' %}" method="post" class="inline-form">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline btn-sm">ログアウト</button>
                     </form>
                 {% else %}
-                    <a href="#login" class="nav-link">ログイン</a>
-                    <a href="#signup" class="btn btn-primary btn-sm">会員登録</a>
+                    <a href="{% url 'accounts:login' %}" class="nav-link">ログイン</a>
+                    <a href="{% url 'accounts:signup' %}" class="btn btn-primary btn-sm">会員登録</a>
                 {% endif %}
             </nav>
         </div>
