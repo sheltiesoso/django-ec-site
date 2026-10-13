@@ -32,15 +32,27 @@ def cart_add(request, product_id):
     product = get_object_or_404(Product, pk=product_id, is_active=True)
     cart = Cart(request)
 
+    if not product.is_in_stock:
+        messages.error(request, f"申し訳ありません。「{product.name}」は売り切れです。")
+        return redirect('products:product_detail', pk=product.pk)
+
     try:
         quantity = int(request.POST.get('quantity', 1))
         if quantity <= 0:
-            quantity = 1
+            messages.error(request, "数量は1以上を指定してください。")
+            return redirect('products:product_detail', pk=product.pk)
     except ValueError:
-        quantity = 1
+        messages.error(request, "有効な数量を入力してください。")
+        return redirect('products:product_detail', pk=product.pk)
 
-    if not product.is_in_stock:
-        messages.error(request, f"申し訳ありません。「{product.name}」は売り切れです。")
+    # 現在カートにある数量と合算して在庫チェック
+    current_item = cart.cart.get(str(product.id))
+    current_quantity = current_item['quantity'] if current_item else 0
+    if current_quantity + quantity > product.stock:
+        messages.error(
+            request,
+            f"「{product.name}」は残り{product.stock}点です。カート内の数量（{current_quantity}点）と合計して在庫数を超えるため追加できません。"
+        )
         return redirect('products:product_detail', pk=product.pk)
 
     cart.add(product=product, quantity=quantity)
@@ -59,6 +71,11 @@ def cart_update(request, product_id):
         if quantity <= 0:
             cart.remove(product)
             messages.info(request, f"「{product.name}」をカートから削除しました。")
+        elif quantity > product.stock:
+            messages.error(
+                request,
+                f"申し訳ありません。「{product.name}」の在庫は残り{product.stock}点のため、{quantity}点には変更できません。"
+            )
         else:
             cart.update(product=product, quantity=quantity)
             messages.success(request, f"「{product.name}」の数量を更新しました。")

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}ページが見つかりません (404) | Craft Coffee & Goods{% endblock %}
+
+{% block content %}
+<div class="error-page-container">
+    <div class="error-card">
+        <div class="error-code">404</div>
+        <h1 class="error-title">ページが見つかりません</h1>
+        <p class="error-desc">
+            お探しのページは移動・削除されたか、URLが間違っている可能性があります。<br>
+            以下のリンクからお探しの情報を見つけてください。
+        </p>
+        <div class="error-actions">
+            <a href="/" class="btn btn-primary">トップページへ戻る</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1073,3 +1073,113 @@ body {
     .order-detail-grid { grid-template-columns: 1fr; }
     .detail-header-flex { flex-direction: column; gap: .75rem; }
 }
+
+/* === Phase 9: メッセージ・バリデーション & カスタムエラーページ === */
+
+/* フラッシュメッセージ枠 */
+.message-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.alert {
+    padding: 0.9rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    border-left: 4px solid transparent;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.alert-success {
+    background-color: #f0fdf4;
+    color: #166534;
+    border-left-color: #22c55e;
+}
+
+.alert-error {
+    background-color: #fef2f2;
+    color: #991b1b;
+    border-left-color: #ef4444;
+}
+
+.alert-warning {
+    background-color: #fffbeb;
+    color: #92400e;
+    border-left-color: #f59e0b;
+}
+
+.alert-info {
+    background-color: #f0f9ff;
+    color: #075985;
+    border-left-color: #0ea5e9;
+}
+
+/* フォームエラー */
+.form-error {
+    color: #dc2626;
+    font-size: 0.85rem;
+    margin-top: 0.35rem;
+    line-height: 1.4;
+}
+
+.form-error p {
+    margin: 0.2rem 0;
+}
+
+/* カスタムエラーページ (404 / 500) */
+.error-page-container {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.error-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 3.5rem 2.5rem;
+    text-align: center;
+    max-width: 520px;
+    width: 100%;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+}
+
+.error-code {
+    font-size: 5rem;
+    font-weight: 800;
+    color: #e2e8f0;
+    line-height: 1;
+    margin-bottom: 1rem;
+    letter-spacing: -0.05em;
+}
+
+.error-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+}
+
+.error-desc {
+    font-size: 0.95rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.error-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
