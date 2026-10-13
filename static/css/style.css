@@ -1183,3 +1183,92 @@ body {
     justify-content: center;
     gap: 1rem;
 }
+
+/* === Phase 11: UI/CSSスタイリング改善 & レスポンシブ調整 === */
+
+/* インタラクション & マイクロアニメーション向上 */
+.product-card {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04);
+}
+
+.btn {
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+/* テーブルのスマートフォン横スクロール保護 */
+.cart-main,
+.history-table-card,
+.order-card {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* スマホ幅（640px以下）の最適化レイアウト */
+@media (max-width: 640px) {
+    .header-inner {
+        height: auto;
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .nav-menu {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 0.6rem 0.85rem;
+        font-size: 0.88rem;
+    }
+
+    .nav-user {
+        width: 100%;
+        text-align: center;
+        font-size: 0.82rem;
+        color: #64748b;
+        order: -1;
+    }
+
+    .page-title {
+        font-size: 1.4rem;
+    }
+
+    .cart-table th,
+    .cart-table td,
+    .history-table th,
+    .history-table td {
+        padding: 0.75rem 0.6rem;
+        font-size: 0.85rem;
+    }
+
+    .cart-item-info {
+        gap: 0.5rem;
+    }
+
+    .cart-item-thumb {
+        width: 44px;
+        height: 44px;
+    }
+
+    .error-card {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .error-code {
+        font-size: 3.8rem;
+    }
+}
